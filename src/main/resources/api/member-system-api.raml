@@ -1,0 +1,85 @@
+#%RAML 1.0
+title: MEMBER-SYSTEM-API
+description: This RAML file describes structure of all member system API.
+
+traits:
+  client-id-enforcement: !include /exchange_modules/98e79d99-3e6a-4d80-889b-76dc9755b161/fragment-common-traits/1.0.2/client-id-enforcement-header-trait.raml
+  common-trait: !include /exchange_modules/98e79d99-3e6a-4d80-889b-76dc9755b161/fragment-common-traits/1.0.2/common-header-trait.raml
+  member-queryParams: !include /exchange_modules/98e79d99-3e6a-4d80-889b-76dc9755b161/fragment-common-traits/1.0.2/member-queryParams-traits.raml
+
+types:
+  error-response-datatype: !include /exchange_modules/98e79d99-3e6a-4d80-889b-76dc9755b161/fargment-datatypes/1.0.4/Errors/error-response-dataType.raml
+  get-OTP-response: !include /exchange_modules/98e79d99-3e6a-4d80-889b-76dc9755b161/fargment-datatypes/1.0.4/Authorization/get-OTP-response-dataType.raml
+  post-OTP-request: !include /exchange_modules/98e79d99-3e6a-4d80-889b-76dc9755b161/fargment-datatypes/1.0.4/Authorization/post-OTP-request-dataType.raml
+  post-OTP-response: !include /exchange_modules/98e79d99-3e6a-4d80-889b-76dc9755b161/fargment-datatypes/1.0.4/Authorization/post-OTP-response-dataType.raml
+ 
+/members:
+  /otp:
+    post:
+      description: This API will post member details.
+      is: [client-id-enforcement , common-trait]
+      body:
+        application/json:
+          description: This is success response for get member detaild api
+          type: post-OTP-request
+          example: !include /Examples/post_OTP-request-example.json
+      responses:
+        200:
+          body:
+            application/json:
+              type: post-OTP-response
+              example: !include /Examples/post-OTP-response-example.json
+        400:
+          body:
+            application/json:
+              type: error-response-datatype
+              example: !include /Examples/error-400-response-example.json
+              
+        401:
+          body:
+            application/json:
+              type: error-response-datatype
+              example: !include /Examples/error-401-response-example.json
+        404:
+            body:
+              application/json:
+                type: error-response-datatype
+                example: !include /Examples/error-404-response-example.json
+        500:
+          body:
+              application/json:
+                type: error-response-datatype
+                example: !include /Examples/error-500-response-example.json
+  /{memberId}:
+    /otp:
+      get:
+        description: This API will fetch member details.
+        is: [client-id-enforcement , common-trait]
+        responses:
+          200:
+            body:
+              application/json:
+                type: get-OTP-response 
+                example: !include /Examples/get-OTP-response-example.json
+          400:
+            body:
+              application/json:
+                type: error-response-datatype
+                example: !include /Examples/error-400-response-example.json
+          401:
+            body:
+              application/json:
+                type: error-response-datatype
+                example: !include /Examples/error-401-response-example.json
+          404:
+            body:
+              application/json:
+                type: error-response-datatype
+                example: !include /Examples/error-404-response-example.json
+          500:
+            body:
+              application/json:
+                type: error-response-datatype
+                example: !include /Examples/error-500-response-example.json              
+  
+ 
